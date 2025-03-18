@@ -1,15 +1,15 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const cityDropdown = document.getElementById('cityDropdown');
+document.addEventListener('DOMContentLoaded', function() { //ensures the HTML file is loaded before executing 
+    const cityDropdown = document.getElementById('cityDropdown'); //some variables for elemnts
     const getWeatherButton = document.getElementById('getWeatherButton');
     const weatherOutputDiv = document.getElementById('weatherOutput');
 
-    function populateDropdown() {
+    function populateDropdown() { //this helps make the dropdown menu for selecting a city
     try {
-      fetch('file.json')
-        .then(response => response.json())
+      fetch('file.json') //gets the data of coordinates of cities from here
+        .then(response => response.json()) //creates a promise that waits for intializing data from the JSON file
         .then(cities => {
           cities.forEach(city => {
-            const option = document.createElement('option');
+            const option = document.createElement('option'); //makes each option with the values of the latitude and longitude to send back
             option.value = JSON.stringify({ lat: city.latitude, lon: city.longitude });
             option.textContent = city.city;
             cityDropdown.appendChild(option);
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     }
 
-   async function getWeather(latitude, longitude) {
+   async function getWeather(latitude, longitude) { //takes a given latitude and longitude and returns the weather for a we
     try {
       const apiUrl = `http://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=civillight&output=json`;
 
@@ -44,11 +44,13 @@ document.addEventListener('DOMContentLoaded', function() {
           const minTemp = dayData.temp2m.min;
 
           let imageSrc = '';
-          switch (weatherCondition) {
+          switch (weatherCondition) { //cases for what image to post
             case 'clear':
               imageSrc = '../images/clear.png';
               break;
             case 'mcloudy':
+              imageSrc = '../images/mcloudy.png';
+              break;
             case 'pcloudy':
               imageSrc = '../images/pcloudy.png';
               break;
@@ -64,9 +66,24 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'fog':
               imageSrc = '../images/fog.png';
               break;
+            case 'windy':
+                imageSrc = '../images/windy.png';
+                break;
+            case 'tsrain':
+                imageSrc = '../images/tsrain.png';       
+                break;
+            case 'tstorm':
+                imageSrc = '../images/tstorm.png';       
+                break;
+            case 'snow':
+                imageSrc = '../images/snow.png';       
+                break;
+            case 'oshower':
+                imageSrc = '../images/oshower.png';       
+                break;
             default:
-                  imageSrc = '../images/unknown.png'; // Handle unknown weather conditions
-              break;
+                imageSrc = '../images/clear.png'
+                break;
           }
 
           // Build the weather information string
